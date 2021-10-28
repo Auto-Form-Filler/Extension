@@ -1,0 +1,112 @@
+
+console.log("MyForms Extension ready to go!");
+
+chrome.runtime.onMessage.addListener(findForms);
+
+var forms = [];
+// look for forms
+function findForms(message, sender, sendresponse) {
+    // getData("MyForms", function(items){
+    //     console.log("Got", items);
+    // })
+    // console.log("Got data");
+    let manyForms = document.getElementsByTagName("form");
+    for (form of manyForms) {
+        x = document.createElement("h1");
+        if(form.firstChild != null)
+          generateStruct(form);
+        x.innerText = message;
+        form.insertBefore(x, form.firstChild);
+    }
+}
+
+//store structured form in array
+function generateStruct(form) {
+
+    let Qs = form.getElementsByClassName("freebirdFormviewerComponentsQuestionBaseRoot");
+    let Ins = form.getElementsByClassName("quantumWizTextinputPaperinputInput");
+    let len = Qs.length;
+    let labels=[];
+    for(i=0; i< len; i++){
+        if(Qs[i].getElementsByClassName("quantumWizTextinputPaperinputInput") != null) {
+            let label = Qs[i].innerText;
+            label= label.substring(0, label.indexOf("\n"));
+            label = label.substring(0,50);      //limit label to 50 chars
+            label = label.toLowerCase();
+            labels.push(label);
+        }
+    }
+    let ob= {
+        "Labels" : labels,
+        "Inputs" : Ins
+    }
+    forms.push(ob)
+    console.log("form structure: "+ forms);
+    search();
+    callUp();
+}
+
+
+function putData(ob, func) {
+    chrome.storage.sync.set(ob, func);
+}
+
+putData({
+    "MyForms": {
+        Data: [{
+                "id": "name",
+                "value": "manan",
+                "prob": 100,
+                "count": 1
+            },{
+                "id": "age",
+                "value":"21",
+                "prob": 100,
+                "count": 1
+            },{
+                "id": "contact",
+                "value": "9999999999",
+                "prob": 100,
+                "count": 2
+            },{
+                "id": "college",
+                "value": "MIET",
+                "prob": 100,
+                "count": 3
+            }
+        ],
+        Rules: [{
+
+        }]
+    }},()=>{console.log("Putting developing sample in local storage!")})
+function getData(arr, func) {
+    chrome.storage.sync.get(arr, func);
+}
+
+var read=[{
+    id : "name",
+    value: "Manan"
+},
+{
+    id: "college",
+    value: "MIET"
+},
+{
+    id: "contact",
+    value: "92180387"
+},
+{
+    id: "age",
+    value: "21"
+}
+]
+
+function callUp(){
+    getData("MyForms", (items) => {
+        data = items.MyForms.Data;
+        rules = items.MyForms.Rules;
+        console.log("Got from local "+ data)
+        console.log(data_matcher(read, data, rules));
+    });
+}
+
