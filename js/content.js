@@ -4,6 +4,7 @@ console.log("MyForms Extension ready to go!");
 chrome.runtime.onMessage.addListener(findForms);
 
 var forms = [];
+let Ins=[];
 // look for forms
 function findForms(message, sender, sendresponse) {
     // getData("MyForms", function(items){
@@ -24,7 +25,7 @@ function findForms(message, sender, sendresponse) {
 function generateStruct(form) {
 
     let Qs = form.getElementsByClassName("freebirdFormviewerComponentsQuestionBaseRoot");
-    let Ins = form.getElementsByClassName("quantumWizTextinputPaperinputInput");
+        Ins = form.getElementsByClassName("quantumWizTextinputPaperinputInput");
     let len = Qs.length;
     let labels=[];
     for(i=0; i< len; i++){

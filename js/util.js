@@ -11,7 +11,7 @@ function rules_matcher (absentees_read, data_object, rules) {
   
     const searchedRule = rule_searcher(rules, rule.pointer);
     if(searchedRule) // absentee exist with some other rule pointer.
-      searcherRule['probability'] += 100;
+      searcherRule['prob'] += 100;
     else // no record found for absentees therefore creating new one.
       rules.append(rule);
   

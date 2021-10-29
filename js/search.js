@@ -9,7 +9,6 @@ function search(){
         console.log("Got from local "+ data)
         findLabels();
     });
-    
 }
 function findLabels(){
     for(form of forms){
@@ -18,7 +17,7 @@ function findLabels(){
         for(lab of labs){
             lab= lab.toLowerCase();
             let filD =  data.filter((ob)=>{
-                return (ob.label == lab && ob.prob >50)      
+                return (ob.id == lab && ob.prob >50)      
             })
             console.log("filtered: ",filD)
         }
@@ -30,3 +29,5 @@ function cleanup(){
     data= null;
     rules = null;
 }
+//max function
+//write function
