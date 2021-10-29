@@ -1,5 +1,5 @@
 
-let RulesArr;
+let RulesArr=[];
 function data_matcher (read_obj, data_object,r){
   RulesArr = r;
   const combinedDataObj = ObjectsLeftJoin(read_obj, data_object, read_obj[0]['id'], data_object[0]['id']);
@@ -23,7 +23,6 @@ function data_matcher (read_obj, data_object,r){
 
   isAbsentReadObj.map(absentObj => {
     // currently declaring empty array for RulesArr as default
-    const RulesArr = [];
     // currently logging the RulesArr created 
     console.log(rules_matcher(absentObj, data_object, RulesArr));
   })

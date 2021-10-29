@@ -19,6 +19,7 @@ function findLabels(){
             let filD =  data.filter((ob)=>{
                 return (ob.id == lab && ob.prob >50)      
             })
+            //call Write
             console.log("filtered: ",filD)
         }
        

@@ -1,17 +1,25 @@
 
 function rules_matcher (absentees_read, data_object, rules) {
-  
     // matching absentees from data_object.
-    const label_id = data_object.filter( dataObj => dataObj.value == absentees_read.value);
+    const label_ids = data_object.filter( dataObj => dataObj.value == absentees_read.value && dataObj.prob >50);
     let rule, newDataObj; 
-    if(label_id)
-      newDataObj = { id: absentees_read.id, label_id: absentees_read.value, probability: 100, count: 1 };
-    else
-      rule = { pointer: absentees_read.value, location: label_id, probability: 100, count: 1 };
+    if(label_ids.length == 0){
+      newDataObj = absentees_read.map((absentees)=>{
+        return { id: absentees.id, value: absentees.value, prob: 100, count: 1 }
+      })
+    }
+      
+    else{
+      rule = absentees_read.map((absentees)=>{
+        return { pointer: absentees.id, loc: label_ids[0], prob: 100, count: 1 }
+      })
+    }
+    
   
-    const searchedRule = rule_searcher(rules, rule.pointer);
+    const searchedRule = rule_searcher(rules, rule.pointer, rule.loc);
     if(searchedRule) // absentee exist with some other rule pointer.
-      searcherRule['prob'] += 100;
+      searchedRule[0]['prob'] =( ( arrObj['prob'] * (arrObj['count'] - 1) / 100) + 1) / arrObj['count'] 
+     
     else // no record found for absentees therefore creating new one.
       rules.append(rule);
   
@@ -19,7 +27,7 @@ function rules_matcher (absentees_read, data_object, rules) {
   }
   
   const rule_searcher = (rules, pointer) => {
-    return rules.find(rule => rule['pointer'] === pointer);
+    return rules.find(rule => rule['pointer'] == pointer && rule['loc'] == location);
   }
 const ObjectsLeftJoin = (objArr1, objArr2, key1, key2) => objArr1.map(
       arrObj1 => ({
